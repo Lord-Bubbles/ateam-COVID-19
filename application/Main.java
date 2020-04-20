@@ -104,12 +104,11 @@ public class Main extends Application {
     checkBox.getChildren().addAll(diffusion, death, recovery);
     TitledPane menu = new TitledPane("Menu", checkBox);
     HBox top = new HBox();
-    Label title = new Label("Data about");
+    Label title = new Label("Data about"); // Title of data window
     top.getChildren().addAll(title);
     location.setTop(top);
     location.setLeft(menu);
     location.setBottom(returnButton);
-    //Scene secondary = new Scene(location, WINDOW_WIDTH, WINDOW_HEIGHT);
 
     returnButton.setOnAction(e -> { // Return back to the main screen
       primaryStage.getScene().setRoot(root);
@@ -120,7 +119,7 @@ public class Main extends Application {
       String curSelected = AutoComplete.getComboBoxValue(comboBox);
       if (e.getCode() == KeyCode.ENTER && data.contains(curSelected)) {
         primaryStage.getScene().setRoot(location);
-        title.setText("Data about " + curSelected);
+        title.setText("Data about " + curSelected); // Update title of data window
       }
     });
 
