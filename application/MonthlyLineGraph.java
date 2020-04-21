@@ -15,16 +15,13 @@ public class MonthlyLineGraph extends Application {
 	public static final int WINDOW_WIDTH = 400;
 	public static final int WINDOW_HEIGHT = 400;
 
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-
-		BorderPane root = new BorderPane();
-
-		// Group root = new Group();
-		CategoryAxis xAxis = new CategoryAxis();
+        private LineChart chart;
+        
+        public MonthlyLineGraph() {
+          	CategoryAxis xAxis = new CategoryAxis();
 		NumberAxis yAxis = new NumberAxis();
 		xAxis.setLabel("Month");
-		final LineChart chart = new LineChart(xAxis, yAxis);
+		chart = new LineChart(xAxis, yAxis);
 		chart.setTitle("COVID 19 MONTHLY TRENDS");
 		
 		XYChart.Series series1 = new XYChart.Series();
@@ -48,8 +45,14 @@ public class MonthlyLineGraph extends Application {
 		series3.getData().add(new XYChart.Data("Mar", 750));
 		series3.getData().add(new XYChart.Data("Apr", 1600));
 		
-		Scene scene = new Scene(chart, 800, 600);
 		chart.getData().addAll(series1, series2, series3);
+        }
+
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+
+		BorderPane root = new BorderPane();
+                Scene scene = new Scene(chart, 800, 600);
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
@@ -57,5 +60,9 @@ public class MonthlyLineGraph extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
+
+        public LineChart getMonthlyGraph() {
+          return chart;
+        }
 
 }

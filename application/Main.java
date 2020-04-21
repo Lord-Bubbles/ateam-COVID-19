@@ -40,8 +40,8 @@ public class Main extends Application {
   // store any command-line arguments that were entered.
   // NOTE: this.getParameters().getRaw() will get these also
   
-  public static final int WINDOW_WIDTH = 1200;
-  public static final int WINDOW_HEIGHT = 900;
+  public static final int WINDOW_WIDTH = 900;
+  public static final int WINDOW_HEIGHT = 780;
 
   public void init() {
     // TODO: Maybe need this don't know yet
@@ -60,7 +60,6 @@ public class Main extends Application {
     // Adding sample data for testing
     // TODO: Read data into the data list from csv file
     data.add("Spain");
-    data.add("Justin is a butt");
     data.add("France");
     data.add("United States of America (USA)");
     data.add("Japan");
@@ -72,7 +71,7 @@ public class Main extends Application {
     // Setting up the search field with auto-complete
     ComboBox<String> comboBox = new ComboBox<>(FXCollections.observableArrayList(data));
     AutoComplete.autoCompleteComboBoxPlus(comboBox, (typedText, itemToCompare) -> 
-	itemToCompare.toLowerCase().contains(typedText.toLowerCase()));
+	itemToCompare.toLowerCase().startsWith(typedText.toLowerCase()));
     comboBox.setMinWidth(comboBox.getWidth());
     comboBox.setMinHeight(comboBox.getHeight());
 
@@ -99,15 +98,20 @@ public class Main extends Application {
 
     VBox checkBox = new VBox();
     CheckBox diffusion = new CheckBox("Diffusion rate"); // Checkbox for showing data
+    diffusion.setSelected(true);
     CheckBox death = new CheckBox("Death rate");
+    death.setSelected(true);
     CheckBox recovery = new CheckBox("Recovery rate");
+    recovery.setSelected(true);
     checkBox.getChildren().addAll(diffusion, death, recovery);
     TitledPane menu = new TitledPane("Menu", checkBox);
     HBox top = new HBox();
-    Label title = new Label("Data about"); // Title of data window
+    Label title = new Label(); // Title of data window
     top.getChildren().addAll(title);
     location.setTop(top);
     location.setLeft(menu);
+    MonthlyLineGraph month = new MonthlyLineGraph();
+    location.setCenter(month.getMonthlyGraph());
     location.setBottom(returnButton);
 
     returnButton.setOnAction(e -> { // Return back to the main screen
@@ -125,6 +129,30 @@ public class Main extends Application {
 
     exit.setOnAction(e -> { // Close the application
       primaryStage.close();
+    });
+
+    death.setOnAction(e -> {
+      if (death.isSelected()) {
+        // Display data about death rate
+      } else {
+        // Don't display data about death rate
+      } 
+    });
+
+    recovery.setOnAction(e -> {
+      if (recovery.isSelected()) {
+        // Display data about recovery rate
+      } else {
+        // Don't display data about recovery rate
+      }
+    });
+
+    diffusion.setOnAction(e -> {
+      if (diffusion.isSelected()) {
+        // Display data about diffusion
+      } else {
+        // Don't display data about diffusion
+      }
     });
   }
 
