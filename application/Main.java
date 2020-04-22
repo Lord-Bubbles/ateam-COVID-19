@@ -15,6 +15,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -82,6 +83,7 @@ public class Main extends Application {
     Image exitImage = new Image("/exit.png", 16, 16, false, false);
     Button exit = new Button("", new ImageView(exitImage)); // Create exit button
     exit.setTooltip(new Tooltip("Exit")); // Tooltip for the exit button
+    BorderPane.setAlignment(exit, Pos.BOTTOM_RIGHT);
     root.setBottom(exit); 
 
     Scene mainScene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
