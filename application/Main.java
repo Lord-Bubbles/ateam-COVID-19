@@ -112,8 +112,10 @@ public class Main extends Application {
     top.getChildren().addAll(title);
     location.setTop(top);
     location.setLeft(menu);
-    MonthlyLineGraph month = new MonthlyLineGraph();
-    location.setCenter(month.getMonthlyGraph());
+    // MonthlyLineGraph month = new MonthlyLineGraph();		// can be used to get monthly graph
+    // DailyLineGraph days = new DailyLineGraph();		// can be used to get daily graph
+    RealTimeGraph real = new RealTimeGraph();		// can be used to get a real time graph
+    location.setCenter(real.getRealTimeGraph());
     location.setBottom(returnButton);
 
     returnButton.setOnAction(e -> { // Return back to the main screen

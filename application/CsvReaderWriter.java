@@ -8,11 +8,11 @@ import java.util.List;
 
 public class CsvReaderWriter {
 
-	public static void main(String[] args) {
-		String filePath = ".csv";
-		//writeCsv(filePath);
-		readCsv(filePath);
-	}
+//	public static void main(String[] args) {
+//		String filePath = "us.csv";
+//		// writeCsv(filePath);
+//		readCsv(filePath);
+//	}
 
 //	public static void writeCsv(String filePath) {
 //		List<Event> events = new ArrayList<Event>();
@@ -38,19 +38,18 @@ public class CsvReaderWriter {
 //		}
 //	}
 
-	public static void readCsv(String filePath) {
+	public static List<Event> readCsv(String filePath) {
 		BufferedReader reader = null;
-		
+		List<Event> events = new ArrayList<Event>();
 		try {
-			List<Event> events = new ArrayList<Event>();
 			String line = "";
 			reader = new BufferedReader(new FileReader(filePath));
 			reader.readLine();
-			
-			while((line = reader.readLine() ) != null){
-				String[] fields = line.split(" ");
-				
-				if (fields.length > 0 ) {
+
+			while ((line = reader.readLine()) != null) {
+				String[] fields = line.split(",");
+
+				if (fields.length > 0) {
 					Event event = new Event();
 					event.setDate(fields[0]);
 					event.setCases(Integer.parseInt(fields[1]));
@@ -58,18 +57,19 @@ public class CsvReaderWriter {
 					events.add(event);
 				}
 			}
-			 for(Event u: events) {
-				    System.out.printf("[data=%d, cases=%s, deaths=%s]\n", u.getDate(), u.getCases(), u.getDeaths());
-				   }
-				   
-				  } catch (Exception ex) {
-				   ex.printStackTrace();
-				  } finally {
-				   try {
-				    reader.close();
-				   } catch (Exception e) {
-				    e.printStackTrace();
-				   }
-				  }
+			for (Event u : events)
+				System.out.printf("[date=%s, cases=%d, deaths=%d]\n",
+						u.getDate(), u.getCases(),
+						u.getDeaths());
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		} finally {
+			try {
+				reader.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return events;
 	}
 }
