@@ -27,10 +27,10 @@ public class RealTimeGraph extends Application {
 	ScheduledExecutorService scheduledExecutorService;
 	public static final int WINDOW_WIDTH = 400;
 	public static final int WINDOW_HEIGHT = 400;
-	final CategoryAxis xAxis = new CategoryAxis();
-	final NumberAxis yAxis = new NumberAxis();
-	final LineChart<String, Number> lineChart = new LineChart<>(xAxis, yAxis);
-	static int current = 0;
+	private CategoryAxis xAxis;
+	private NumberAxis yAxis;
+	private LineChart<String, Number> lineChart;
+	private static int current = 0;
 	private XYChart.Series<String, Number> series1; // confirmed cases
 	private XYChart.Series<String, Number> series2; // death rates
 
@@ -38,16 +38,28 @@ public class RealTimeGraph extends Application {
 	 * This constructor is used to set the labels and titles of the graphs
 	 */
 	public RealTimeGraph() {
-		xAxis.setLabel("Time (Days)");
-		xAxis.setAnimated(false); // axis animations are removed
-		yAxis.setAnimated(false); // axis animations are removed
-		lineChart.setTitle("RealTime Trends over 40 day Timespan");
-		lineChart.setAnimated(false);
-		series1 = new XYChart.Series<>();
-		series2 = new XYChart.Series<>();
-		series1.setName("Confirmed Cases");
-		series2.setName("Confirmed Deaths");
-	}
+		init();
+        }
+
+        /**
+         * Re-initialize everything
+         * @author Andrew Li
+         */
+        public void init() {
+          current = 0;
+          xAxis = new CategoryAxis();
+          yAxis = new NumberAxis();
+          lineChart = new LineChart<>(xAxis, yAxis);
+          xAxis.setLabel("Time (Days)");
+	  xAxis.setAnimated(false); // axis animations are removed
+	  yAxis.setAnimated(false); // axis animations are removed
+	  lineChart.setTitle("RealTime Trends over 40 day Timespan");
+	  lineChart.setAnimated(false);
+	  series1 = new XYChart.Series<>();
+	  series2 = new XYChart.Series<>();
+	  series1.setName("Confirmed Cases");
+	  series2.setName("Confirmed Deaths");
+        }
 
 	/**
 	 * This method is used if you want to individually start up the real time
@@ -91,7 +103,7 @@ public class RealTimeGraph extends Application {
 	 * @return chart - a chart of both data points plotted
 	 */
 	public LineChart getRealTimeGraph(String country) {
-                current = 0;
+                init();
 		lineChart.getData().addAll(series1, series2);
 		// Input data to the chart
 		List<Event> weeklyCases = FxUtils.data.get(country);

@@ -24,9 +24,9 @@ public class DailyLineGraph extends Application {
 
 	public static final int WINDOW_WIDTH = 400;
 	public static final int WINDOW_HEIGHT = 400;
-	final CategoryAxis xAxis = new CategoryAxis();
-	final NumberAxis yAxis = new NumberAxis();
-	final LineChart chart = new LineChart(xAxis, yAxis);
+        private CategoryAxis xAxis;
+	private NumberAxis yAxis;
+	private LineChart chart;
 	private XYChart.Series series1; // data for confirmed cases
 	private XYChart.Series series2; // data for death rates
 
@@ -35,13 +35,28 @@ public class DailyLineGraph extends Application {
 	 * 
 	 */
 	public DailyLineGraph() {
-		xAxis.setLabel("Week");
-		chart.setTitle("COVID 19 WEEKLY TRENDS");
-		series1 = new XYChart.Series();
-		series1.setName("Number of Cases");
-		series2 = new XYChart.Series();
-		series2.setName("Number of Deaths");
-	}
+          init();
+        }
+
+        /**
+         * Re-initialize everything
+         * @author Andrew Li
+         */
+        public void init() {
+          xAxis = new CategoryAxis();
+          yAxis = new NumberAxis();
+          chart = new LineChart(xAxis, yAxis);
+
+          series1 = new XYChart.Series();
+          series2 = new XYChart.Series();
+
+          xAxis.setLabel("Week");
+	  chart.setTitle("COVID 19 WEEKLY TRENDS");
+	  series1 = new XYChart.Series();
+	  series1.setName("Number of Cases");
+	  series2 = new XYChart.Series();
+	  series2.setName("Number of Deaths");
+        }
 
 	/**
 	 * This method is used if you want to individually start up the daily line
@@ -77,6 +92,7 @@ public class DailyLineGraph extends Application {
 		//List<Event> countryStats = CsvReaderWriter
 		//		.readCsv("confirmedglobal.csv", "deathsglobal.csv", country);
                 List<Event> countryStats = FxUtils.data.get(country);
+                init();
 		for (Event e : countryStats) {	
 			series1.getData().add(		// confirmed cases
 					new XYChart.Data(e.getDate().substring(6), e.getCases()));
