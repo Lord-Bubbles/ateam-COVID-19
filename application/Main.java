@@ -3,6 +3,11 @@ package application;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.animation.Animation;
+import javafx.animation.Interpolator;
+import javafx.animation.ParallelTransition;
+import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.Observable;
@@ -32,10 +37,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class Main extends Application {
   // store any command-line arguments that were entered.
@@ -54,10 +61,43 @@ public class Main extends Application {
    */
   @Override
   public void start(Stage primaryStage) throws Exception {
+    Image bg = new Image("/bg.jpg");
+    ImageView bgImage = new ImageView();
+    bgImage.setImage(bg);
+    bgImage.setFitWidth(WINDOW_WIDTH);
+    bgImage.setFitHeight(WINDOW_HEIGHT);
+    bgImage.setSmooth(true);
+    ImageView bg2Image = new ImageView();
+    bg2Image.setImage(bg);
+    bg2Image.setFitWidth(WINDOW_WIDTH);
+    bg2Image.setFitHeight(WINDOW_HEIGHT);
+    bg2Image.setSmooth(true);
+    bg2Image.setX(WINDOW_WIDTH);
+    
     // Main layout is Border Pane example (top,left,center,right,bottom)
     BorderPane root = new BorderPane();
     List<String> data = new ArrayList<>(); // List of countries for which we have data;
 
+    //animates the background
+    TranslateTransition tt = new TranslateTransition(Duration.millis(50000),
+    		bgImage);
+    tt.setFromX(0);
+    tt.setToX(-1 * WINDOW_WIDTH);
+    tt.setInterpolator(Interpolator.LINEAR);
+    
+    TranslateTransition tt2 = new TranslateTransition(Duration.millis(50000),
+    		bg2Image);
+    tt2.setFromX(0);
+    tt2.setToX(-1 * WINDOW_WIDTH);
+    tt2.setInterpolator(Interpolator.LINEAR);
+    
+    ParallelTransition pt = new ParallelTransition(tt, tt2);
+    pt.setCycleCount(Animation.INDEFINITE);
+    pt.play();
+    
+    root.getChildren().add(bgImage);
+    root.getChildren().add(bg2Image);
+    
     // Adding sample data for testing
     // TODO: Read data into the data list from csv file
     data.add("Spain");
@@ -70,25 +110,24 @@ public class Main extends Application {
     data.add("China");
 
     HBox box = new HBox();
-    Button globalStats = new Button();
 
     // Setting up the search field with auto-complete
     ComboBox<String> comboBox = new ComboBox<>(FXCollections.observableArrayList(data));
     AutoComplete.autoCompleteComboBoxPlus(comboBox, (typedText, itemToCompare) -> 
-	itemToCompare.toLowerCase().startsWith(typedText.toLowerCase()));
+    itemToCompare.toLowerCase().startsWith(typedText.toLowerCase()));
     comboBox.setMinWidth(comboBox.getWidth());
     comboBox.setMinHeight(comboBox.getHeight());
 
 
-    box.getChildren().addAll(globalStats, comboBox);
-    root.setTop(box);
-    root.setCenter(new HBox());
+    box.getChildren().addAll(comboBox);
+    box.setAlignment(Pos.CENTER);
+    root.setCenter(box);
     Image exitImage = new Image("/exit.png", 16, 16, false, false);
     Button exit = new Button("", new ImageView(exitImage)); // Create exit button
     exit.setTooltip(new Tooltip("Exit")); // Tooltip for the exit button
     BorderPane.setAlignment(exit, Pos.BOTTOM_RIGHT);
     root.setBottom(exit); 
-
+    
     Scene mainScene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 
     // Add the above elements and set the primary stage
@@ -102,13 +141,11 @@ public class Main extends Application {
     returnButton.setTooltip(new Tooltip("Return")); // Tooltip for the return button
 
     VBox checkBox = new VBox();
-    CheckBox diffusion = new CheckBox("Diffusion rate"); // Checkbox for showing data
-    diffusion.setSelected(true);
-    CheckBox death = new CheckBox("Death rate");
+    CheckBox death = new CheckBox("Confirmed deaths");
     death.setSelected(true);
-    CheckBox recovery = new CheckBox("Recovery rate");
-    recovery.setSelected(true);
-    checkBox.getChildren().addAll(diffusion, death, recovery);
+    CheckBox cc = new CheckBox("Confirmed cases");
+    cc.setSelected(true);
+    checkBox.getChildren().addAll(death, cc);
     TitledPane menu = new TitledPane("Menu", checkBox);
     HBox top = new HBox();
     Label title = new Label(); // Title of data window
@@ -155,26 +192,19 @@ public class Main extends Application {
       } 
     });
 
-    recovery.setOnAction(e -> {
-      if (recovery.isSelected()) {
-        // Display data about recovery rate
-      } else {
-        // Don't display data about recovery rate
-      }
-    });
-
-    diffusion.setOnAction(e -> {
-      if (diffusion.isSelected()) {
+    cc.setOnAction(e -> {
+      if (cc.isSelected()) {
         // Display data about diffusion
       } else {
         // Don't display data about diffusion
       }
     });
   }
-
+  
   public static void main(String[] args) {
     launch(args);
   }
+ 
 }
 
 /**
