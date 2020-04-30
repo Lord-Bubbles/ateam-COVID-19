@@ -185,6 +185,10 @@ public class Main extends Application {
     exit.setOnAction(e -> { // Close the application
       primaryStage.close();
     });
+    
+    exit2.setOnAction(e -> { // Close the application
+      primaryStage.close();
+    });
 
     realTime.setOnAction(e -> { // Set the actions of the realTime checkbox to show the real-time graph
       if (realTime.isSelected()) {
