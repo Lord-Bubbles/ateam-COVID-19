@@ -146,7 +146,7 @@ public class Main extends Application {
     title.setFont(new Font("Helvetica", 17));
     top.getChildren().addAll(returnButton, title);
     location.setTop(top);
-    location.setLeft(menu);
+
     MonthlyLineGraph month = new MonthlyLineGraph();	// can be used to get monthly graph
     DailyLineGraph days = new DailyLineGraph();		// can be used to get daily graph
     RealTimeGraph real = new RealTimeGraph();		// can be used to get a real time graph
