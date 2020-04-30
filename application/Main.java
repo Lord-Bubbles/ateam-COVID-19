@@ -140,11 +140,6 @@ public class Main extends Application {
     CheckBox monthly = new CheckBox("Monthly"); // Monthly graph
     CheckBox daily = new CheckBox("Daily"); // Daily graph
     checkBox.getChildren().addAll(realTime, monthly, daily);
-    CheckBox death = new CheckBox("Confirmed deaths");
-    death.setSelected(true);
-    CheckBox cc = new CheckBox("Confirmed cases");
-    cc.setSelected(true);
-    checkBox.getChildren().addAll(death, cc);
     TitledPane menu = new TitledPane("Menu", checkBox);
     HBox top = new HBox();
     Label title = new Label(); // Title of data window
@@ -171,6 +166,7 @@ public class Main extends Application {
 
     returnButton.setOnAction(e -> { // Return back to the main screen
       primaryStage.getScene().setRoot(root);
+      comboBox.getEditor().setText(null);
     });
     
     comboBox.setOnKeyPressed(e -> { // Make sure that scene changes only when the user confirms
@@ -214,21 +210,6 @@ public class Main extends Application {
       }
     });
 
-    death.setOnAction(e -> {
-      if (death.isSelected()) {
-        // Display data about death rate
-      } else {
-        // Don't display data about death rate
-      } 
-    });
-
-    cc.setOnAction(e -> {
-      if (cc.isSelected()) {
-        // Display data about diffusion
-      } else {
-        // Don't display data about diffusion
-      }
-    });
   }
   
   public static void main(String[] args) {
