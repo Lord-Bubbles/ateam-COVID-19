@@ -1,8 +1,5 @@
 package application;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javafx.application.Application;
 import javafx.collections.*;
 import javafx.geometry.Pos;
@@ -13,88 +10,59 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-/**
- * This class is used to represent a Monthly Line Graph of a country that plots
- * both the confirmed cases and the death rates of COVID19 across four months.
- * 
- * @author paul
- *
- */
 public class MonthlyLineGraph extends Application {
 
 	public static final int WINDOW_WIDTH = 400;
 	public static final int WINDOW_HEIGHT = 400;
-	private static final String[] MONTHS = { "JAN", "FEB", "MAR", "APR" };
-	final CategoryAxis xAxis = new CategoryAxis();
-	final NumberAxis yAxis = new NumberAxis();
-	final LineChart chart = new LineChart(xAxis, yAxis);
-	private XYChart.Series series1; // confirmed cases
-	private XYChart.Series series2; // death rates
 
-	/**
-	 * This constructor is used to set the labels and titles of the graphs
-	 */
-	public MonthlyLineGraph() {
+        private LineChart chart;
+        
+        public MonthlyLineGraph() {
+          	CategoryAxis xAxis = new CategoryAxis();
+		NumberAxis yAxis = new NumberAxis();
 		xAxis.setLabel("Month");
+		chart = new LineChart(xAxis, yAxis);
 		chart.setTitle("COVID 19 MONTHLY TRENDS");
-		series1 = new XYChart.Series();
-		series2 = new XYChart.Series();
+		
+		XYChart.Series series1 = new XYChart.Series();
 		series1.setName("Number of Cases");
-		series2.setName("Number of Deaths");
-	}
+		series1.getData().add(new XYChart.Data("Jan", 200));
+		series1.getData().add(new XYChart.Data("Feb", 1200));
+		series1.getData().add(new XYChart.Data("Mar", 2700));
+		series1.getData().add(new XYChart.Data("Apr", 10000));
 
-	/**
-	 * This method is used if you want to individually start up the monthly line
-	 * graph. This method is not explicitly used.
-	 */
+		XYChart.Series series2 = new XYChart.Series();
+		series2.setName("Number of Deaths");
+		series2.getData().add(new XYChart.Data("Jan", 33));
+		series2.getData().add(new XYChart.Data("Feb", 100));
+		series2.getData().add(new XYChart.Data("Mar", 245));
+		series2.getData().add(new XYChart.Data("Apr", 500));
+		
+		XYChart.Series series3 = new XYChart.Series();
+		series3.setName("Number of Recoveries");
+		series3.getData().add(new XYChart.Data("Jan", 40));
+		series3.getData().add(new XYChart.Data("Feb", 400));
+		series3.getData().add(new XYChart.Data("Mar", 750));
+		series3.getData().add(new XYChart.Data("Apr", 1600));
+		
+		chart.getData().addAll(series1, series2, series3);
+        }
+
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+
 		BorderPane root = new BorderPane();
-		Scene scene = new Scene(chart, 800, 600);
+                Scene scene = new Scene(chart, 800, 600);
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
 
-	/**
-	 * This main method is used to launch the graph program individually. This
-	 * method is also not explicitly used.
-	 * 
-	 * @param args - String input arguments not used.
-	 */
 	public static void main(String[] args) {
 		launch(args);
 	}
 
-	/**
-	 * This method is used to return a chart of monthly line graph. This method
-	 * uses a csv reader to retrieve a list of the specified country's confirmed
-	 * cases and death rates.
-	 * 
-	 * @param country - country to graph
-	 * @return chart - a chart of both data points plotted
-	 */
-	public LineChart getMonthlyLineGraph(String country) {
-		List<Event> countryStats = CsvReaderWriter
-				.readCsv("confirmedglobal.csv", "deathsglobal.csv", country);
-		List<Event> monthlyCases = new ArrayList<Event>();
-		for (int i = 0; i < 4; i++) { // adding up all the days to months
-			monthlyCases.add(new Event());
-			monthlyCases.get(i).setDate(MONTHS[i]);
-		}
-		for (int i = 0; i < countryStats.size(); i++) {
-			int j = Integer
-					.parseInt(countryStats.get(i).getDate().substring(6, 7)); // month
-			monthlyCases.get(j - 1).setCases(countryStats.get(i).getCases());
-			monthlyCases.get(j - 1).setDeaths(countryStats.get(i).getDeaths());
-		}
-		for (Event e : monthlyCases) {
-			series1.getData().add(new XYChart.Data(e.getDate(), e.getCases()));
-			series2.getData().add(new XYChart.Data(e.getDate(), e.getDeaths()));
-		}
-		chart.getData().addAll(series1, series2);
-
-		return chart;
-
-	}
+        public LineChart getMonthlyGraph() {
+          return chart;
+        }
 
 }
