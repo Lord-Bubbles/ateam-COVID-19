@@ -41,6 +41,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -147,6 +148,7 @@ public class Main extends Application {
     TitledPane menu = new TitledPane("Menu", checkBox);
     HBox top = new HBox();
     Label title = new Label(); // Title of data window
+    title.setFont(new Font("Helvetica", 17));
     top.getChildren().addAll(returnButton, title);
     location.setTop(top);
     location.setLeft(menu);
@@ -176,7 +178,7 @@ public class Main extends Application {
       String curSelected = FxUtils.getComboBoxValue(comboBox);
       if (e.getCode() == KeyCode.ENTER && data.contains(curSelected)) {
         primaryStage.getScene().setRoot(location);
-        title.setText("Data about " + curSelected); // Update title of data window
+        title.setText("\t Data about " + curSelected); // Update title of data window
       }
     });
 
