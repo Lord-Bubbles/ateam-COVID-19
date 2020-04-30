@@ -128,6 +128,7 @@ public class Main extends Application {
  // location.setCenter(days.getDailyLineGraph("Iran"));
     
     location.setBottom(returnButton);
+    location.setBottom(exit);
 
     returnButton.setOnAction(e -> { // Return back to the main screen
       primaryStage.getScene().setRoot(root);
