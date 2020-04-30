@@ -19,6 +19,7 @@ import javafx.stage.Stage;
  * @author paul
  *
  */
+@SuppressWarnings("unchecked")
 public class DailyLineGraph extends Application {
 
 	public static final int WINDOW_WIDTH = 400;
@@ -73,8 +74,9 @@ public class DailyLineGraph extends Application {
 	 * @return chart - a chart of both data points plotted
 	 */
 	public LineChart getDailyLineGraph(String country) {
-		List<Event> countryStats = CsvReaderWriter
-				.readCsv("confirmedglobal.csv", "deathsglobal.csv", country);
+		//List<Event> countryStats = CsvReaderWriter
+		//		.readCsv("confirmedglobal.csv", "deathsglobal.csv", country);
+                List<Event> countryStats = FxUtils.data.get(country);
 		for (Event e : countryStats) {	
 			series1.getData().add(		// confirmed cases
 					new XYChart.Data(e.getDate().substring(6), e.getCases()));

@@ -21,6 +21,7 @@ import javafx.stage.Stage;
  * @author paul
  *
  */
+@SuppressWarnings("unchecked")
 public class RealTimeGraph extends Application {
 
 	ScheduledExecutorService scheduledExecutorService;
@@ -90,11 +91,12 @@ public class RealTimeGraph extends Application {
 	 * @return chart - a chart of both data points plotted
 	 */
 	public LineChart getRealTimeGraph(String country) {
+                current = 0;
 		lineChart.getData().addAll(series1, series2);
 		// Input data to the chart
-		List<Event> weeklyCases = CsvReaderWriter.readCsv("confirmedglobal.csv",
-				"deathsglobal.csv", country);
-		scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+		List<Event> weeklyCases = FxUtils.data.get(country);
+                System.out.println(weeklyCases.size());
+                scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
 		scheduledExecutorService.scheduleAtFixedRate(() -> { // lambda
 			// Update the chart
 			if (current >= weeklyCases.size() - 1) {
