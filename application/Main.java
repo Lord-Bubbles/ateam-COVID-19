@@ -63,10 +63,7 @@ public class Main extends Application {
     data.add("Spain");
     data.add("France");
     data.add("United States of America (USA)");
-    data.add("Italy");
-    data.add("Germany");
-    data.add("United Kingdom");
-    data.add("Iran");
+    data.add("Japan");
     data.add("China");
 
     HBox box = new HBox();
@@ -115,19 +112,12 @@ public class Main extends Application {
     top.getChildren().addAll(title);
     location.setTop(top);
     location.setLeft(menu);
-    //MonthlyLineGraph month = new MonthlyLineGraph();		// can be used to get monthly graph
-    //DailyLineGraph days = new DailyLineGraph();		// can be used to get daily graph
+    // MonthlyLineGraph month = new MonthlyLineGraph();		// can be used to get monthly graph
+    // DailyLineGraph days = new DailyLineGraph();		// can be used to get daily graph
     RealTimeGraph real = new RealTimeGraph();		// can be used to get a real time graph
-    location.setCenter(real.getRealTimeGraph("China"));
-    // location.setCenter(days.getDailyLineGraph("US"));
- // location.setCenter(days.getDailyLineGraph("United_Kingdom"));
- // location.setCenter(days.getDailyLineGraph("Italy"));
- // location.setCenter(days.getDailyLineGraph("France"));
- // location.setCenter(days.getDailyLineGraph("Germany"));
- // location.setCenter(days.getDailyLineGraph("Spain"));
- // location.setCenter(days.getDailyLineGraph("Iran"));
-    
+    location.setCenter(real.getRealTimeGraph());
     location.setBottom(returnButton);
+    location.setBottom(exit);
 
     returnButton.setOnAction(e -> { // Return back to the main screen
       primaryStage.getScene().setRoot(root);
