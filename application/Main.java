@@ -2,9 +2,12 @@ package application;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
 
+import javafx.animation.Animation;
+import javafx.animation.Interpolator;
+import javafx.animation.ParallelTransition;
+import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.Observable;
@@ -34,10 +37,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class Main extends Application {
   // store any command-line arguments that were entered.
@@ -56,17 +61,47 @@ public class Main extends Application {
    */
   @Override
   public void start(Stage primaryStage) throws Exception {
+    Image bg = new Image("/bg.jpg");
+    ImageView bgImage = new ImageView();
+    bgImage.setImage(bg);
+    bgImage.setFitWidth(WINDOW_WIDTH);
+    bgImage.setFitHeight(WINDOW_HEIGHT);
+    bgImage.setSmooth(true);
+    ImageView bg2Image = new ImageView();
+    bg2Image.setImage(bg);
+    bg2Image.setFitWidth(WINDOW_WIDTH);
+    bg2Image.setFitHeight(WINDOW_HEIGHT);
+    bg2Image.setSmooth(true);
+    bg2Image.setX(WINDOW_WIDTH);
+    
     // Main layout is Border Pane example (top,left,center,right,bottom)
     BorderPane root = new BorderPane();
     List<String> data = new ArrayList<>(); // List of countries for which we have data;
-
-    // Add countries from the csv file into the data list
     for (String e : FxUtils.data.keySet()) {
       data.add(e);
     }
 
+    //animates the background
+    TranslateTransition tt = new TranslateTransition(Duration.millis(50000),
+    		bgImage);
+    tt.setFromX(0);
+    tt.setToX(-1 * WINDOW_WIDTH);
+    tt.setInterpolator(Interpolator.LINEAR);
+    
+    TranslateTransition tt2 = new TranslateTransition(Duration.millis(50000),
+    		bg2Image);
+    tt2.setFromX(0);
+    tt2.setToX(-1 * WINDOW_WIDTH);
+    tt2.setInterpolator(Interpolator.LINEAR);
+    
+    ParallelTransition pt = new ParallelTransition(tt, tt2);
+    pt.setCycleCount(Animation.INDEFINITE);
+    pt.play();
+    
+    root.getChildren().add(bgImage);
+    root.getChildren().add(bg2Image);
+
     HBox box = new HBox();
-    Button globalStats = new Button();
 
     // Setting up the search field with auto-complete
     ComboBox<String> comboBox = new ComboBox<>(FXCollections.observableArrayList(data));
@@ -75,16 +110,15 @@ public class Main extends Application {
     comboBox.setMinWidth(comboBox.getWidth());
     comboBox.setMinHeight(comboBox.getHeight());
 
-
-    box.getChildren().addAll(globalStats, comboBox);
-    root.setTop(box);
-    root.setCenter(new HBox());
+    box.getChildren().addAll(comboBox);
+    box.setAlignment(Pos.CENTER);
+    root.setCenter(box);
     Image exitImage = new Image("/exit.png", 16, 16, false, false);
     Button exit = new Button("", new ImageView(exitImage)); // Create exit button
     exit.setTooltip(new Tooltip("Exit")); // Tooltip for the exit button
     BorderPane.setAlignment(exit, Pos.BOTTOM_RIGHT);
     root.setBottom(exit); 
-
+    
     Scene mainScene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 
     // Add the above elements and set the primary stage
@@ -104,7 +138,12 @@ public class Main extends Application {
     CheckBox monthly = new CheckBox("Monthly"); // Monthly graph
     CheckBox daily = new CheckBox("Daily"); // Daily graph
     checkBox.getChildren().addAll(realTime, monthly, daily);
+    CheckBox death = new CheckBox("Confirmed deaths");
 
+    death.setSelected(true);
+    CheckBox cc = new CheckBox("Confirmed cases");
+    cc.setSelected(true);
+    checkBox.getChildren().addAll(death, cc);
     TitledPane menu = new TitledPane("Menu", checkBox);
     HBox top = new HBox();
     Label title = new Label(); // Title of data window
@@ -116,6 +155,7 @@ public class Main extends Application {
     RealTimeGraph real = new RealTimeGraph();		// can be used to get a real time graph
     location.setCenter(real.getRealTimeGraph("China"));    
     location.setBottom(returnButton);
+    location.setBottom(exit);
 
     returnButton.setOnAction(e -> { // Return back to the main screen
       primaryStage.getScene().setRoot(root);
@@ -127,7 +167,6 @@ public class Main extends Application {
       if (e.getCode() == KeyCode.ENTER && data.contains(curSelected)) {
         primaryStage.getScene().setRoot(location);
         title.setText("Data about " + curSelected); // Update title of data window
-        location.setCenter(real.getRealTimeGraph(curSelected));
       }
     });
 
@@ -159,9 +198,25 @@ public class Main extends Application {
       }
     });
 
-  }
+    death.setOnAction(e -> {
+      if (death.isSelected()) {
+        // Display data about death rate
+      } else {
+        // Don't display data about death rate
+      } 
+    });
 
+    cc.setOnAction(e -> {
+      if (cc.isSelected()) {
+        // Display data about diffusion
+      } else {
+        // Don't display data about diffusion
+      }
+    });
+  }
+  
   public static void main(String[] args) {
     launch(args);
   }
+ 
 }

@@ -95,7 +95,6 @@ public class RealTimeGraph extends Application {
 		lineChart.getData().addAll(series1, series2);
 		// Input data to the chart
 		List<Event> weeklyCases = FxUtils.data.get(country);
-                System.out.println(weeklyCases.size());
                 scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
 		scheduledExecutorService.scheduleAtFixedRate(() -> { // lambda
 			// Update the chart
