@@ -117,6 +117,7 @@ public class Main extends Application {
     RealTimeGraph real = new RealTimeGraph();		// can be used to get a real time graph
     location.setCenter(real.getRealTimeGraph());
     location.setBottom(returnButton);
+    location.setBottom(exit);
 
     returnButton.setOnAction(e -> { // Return back to the main screen
       primaryStage.getScene().setRoot(root);
