@@ -149,7 +149,7 @@ public class Main extends Application {
     TitledPane menu = new TitledPane("Menu", checkBox);
     HBox top = new HBox();
     Label title = new Label(); // Title of data window
-    top.getChildren().addAll(title);
+    top.getChildren().addAll(returnButton, title);
     location.setTop(top);
     location.setLeft(menu);
     //MonthlyLineGraph month = new MonthlyLineGraph();		// can be used to get monthly graph
@@ -163,9 +163,10 @@ public class Main extends Application {
  // location.setCenter(days.getDailyLineGraph("Germany"));
  // location.setCenter(days.getDailyLineGraph("Spain"));
  // location.setCenter(days.getDailyLineGraph("Iran"));
-    
-    location.setBottom(returnButton);
-    location.setBottom(exit);
+    Button exit2 = new Button("", new ImageView(exitImage)); // Create exit button
+    exit2.setTooltip(new Tooltip("Exit")); // Tooltip for the exit button
+    BorderPane.setAlignment(exit2, Pos.BOTTOM_RIGHT);
+    location.setBottom(exit2);
 
     returnButton.setOnAction(e -> { // Return back to the main screen
       primaryStage.getScene().setRoot(root);
