@@ -4,7 +4,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This class is used to read files from an external source and return a list of
@@ -16,66 +18,58 @@ import java.util.List;
  */
 public class CsvReaderWriter {
 
-	/**
-	 * This static method is called by giving two different file paths and a
-	 * country. The first file path should be a file of all the confirmed cases
-	 * across 8 different countries, and the second file path should be a file
-	 * of all the death rates across 8 different countries.
-	 * 
-	 * @param filePath1 - file of confirmed cases
-	 * @param filePath2 - file of death rates
-	 * @param country   - country to graph
-	 * @return List<Event> - list of dates, confirmed cases, death rates for a
-	 *         country
-	 */
-	public static List<Event> readCsv(String filePath1, String filePath2,
-			String country) {
+/**
+         * This static method reads all the countries' data from the given csv files
+         * @param filePath1 the csv file containing all the countries' confirmed cases
+         * @param filePath2 the csv file containing all the countries' death cases
+         * @return List<Event> a list of all of the countries' data concerning COVID-19
+         *
+         * @author Andrew Li
+         */
+        public static Map<String, List<Event>> readCsv(String filePath1, String filePath2) {
 
-		BufferedReader reader1 = null;
-		BufferedReader reader2 = null;
-		List<Event> events = new ArrayList<Event>();
-		try {
-			String line = "";
-			reader1 = new BufferedReader(new FileReader(filePath1)); // confirmed
-			reader2 = new BufferedReader(new FileReader(filePath2)); // death
+	  BufferedReader reader1 = null;
+	  BufferedReader reader2 = null;
+	  Map<String, List<Event>> map = new HashMap<>();
+          try {
+	    String line = "";
+	    reader1 = new BufferedReader(new FileReader(filePath1)); // confirmed
+            reader2 = new BufferedReader(new FileReader(filePath2)); // deaths
 
-			// find the index of the CSV which corresponds to the country
-			int index = 0;
-			String[] countries = reader1.readLine().split(",");
-			for (int i = 1; i < countries.length; i++) { // index 0 is the date
-				if (countries[i].equals(country))
-					index = i;
-			}
-			reader2.readLine(); // read the first title
+            reader2.readLine(); // Skip the first line
 
-			while ((line = reader1.readLine()) != null) {
-				String line2 = reader2.readLine();
-				String[] fields = line.split(",");
-				String[] fields2 = line2.split(",");
-				if (fields.length > 0) {
-					Event event = new Event();
-					event.setDate(fields[0]);
-					event.setCases(Integer.parseInt(fields[index]));
-					event.setDeaths(Integer.parseInt(fields2[index]));
-					events.add(event);
-				}
-			}
-			System.out.println("COUNTRY: " + countries[index]); // print name
-			for (Event u : events) // print to see the data
-				System.out.printf("[date=%s, cases=%d, deaths=%d]\n",
-						u.getDate(), u.getCases(), u.getDeaths());
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		} finally {
-			try {
-				reader1.close();		// close the files
-				reader2.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return events;
+	    // Add all the countries to the map
+	    String[] countries = reader1.readLine().split(",");
+            for (int i = 1; i < countries.length; i++) {
+              map.put(countries[i], new ArrayList<Event>());
+            }
+            // Add all the data
+            while ((line = reader1.readLine()) != null) {
+              String line2 = reader2.readLine();
+              String[] confirmed = line.split(",");
+              String[] deaths = line2.split(",");
+              for (int i = 1; i < confirmed.length; i++) { // Add the data to the corresponding
+                                                           // country's data list
+                Event event = new Event();
+                event.setDate(confirmed[0]);
+                event.setCases(Integer.parseInt(confirmed[i]));
+                event.setDeaths(Integer.parseInt(deaths[i]));
+                map.get(countries[i]).add(event);
+              }
+            }
+	  } catch (Exception ex) {
+	    ex.printStackTrace();
+	  } finally {
+	    try {
+	      reader1.close();		// close the files
+	      reader2.close();
+      	  } catch (Exception e) {
+	      e.printStackTrace();
+	  }
 	}
+	return map;
+      }
+
 
 //	public static void main(String[] args) {
 //	String filePath = "us.csv";

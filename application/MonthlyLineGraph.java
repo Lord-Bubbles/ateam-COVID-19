@@ -20,14 +20,15 @@ import javafx.stage.Stage;
  * @author paul
  *
  */
+@SuppressWarnings("unchecked")
 public class MonthlyLineGraph extends Application {
 
 	public static final int WINDOW_WIDTH = 400;
 	public static final int WINDOW_HEIGHT = 400;
 	private static final String[] MONTHS = { "JAN", "FEB", "MAR", "APR" };
-	final CategoryAxis xAxis = new CategoryAxis();
-	final NumberAxis yAxis = new NumberAxis();
-	final LineChart chart = new LineChart(xAxis, yAxis);
+	private CategoryAxis xAxis;
+	private NumberAxis yAxis;
+	private LineChart chart;
 	private XYChart.Series series1; // confirmed cases
 	private XYChart.Series series2; // death rates
 
@@ -35,13 +36,25 @@ public class MonthlyLineGraph extends Application {
 	 * This constructor is used to set the labels and titles of the graphs
 	 */
 	public MonthlyLineGraph() {
-		xAxis.setLabel("Month");
-		chart.setTitle("COVID 19 MONTHLY TRENDS");
-		series1 = new XYChart.Series();
-		series2 = new XYChart.Series();
-		series1.setName("Number of Cases");
-		series2.setName("Number of Deaths");
+          init();	
 	}
+        
+        /**
+         * Re-initialize everything
+         */
+        public void init() {
+          xAxis = new CategoryAxis();
+          yAxis = new NumberAxis();
+          chart = new LineChart(xAxis, yAxis);
+
+          xAxis.setLabel("Month");
+	  chart.setTitle("COVID 19 MONTHLY TRENDS");
+	  series1 = new XYChart.Series();
+	  series2 = new XYChart.Series();
+	  series1.setName("Number of Cases");
+	  series2.setName("Number of Deaths");
+        }
+
 
 	/**
 	 * This method is used if you want to individually start up the monthly line
@@ -74,10 +87,12 @@ public class MonthlyLineGraph extends Application {
 	 * @return chart - a chart of both data points plotted
 	 */
 	public LineChart getMonthlyLineGraph(String country) {
-		List<Event> countryStats = CsvReaderWriter
-				.readCsv("confirmedglobal.csv", "deathsglobal.csv", country);
-		List<Event> monthlyCases = new ArrayList<Event>();
-		for (int i = 0; i < 4; i++) { // adding up all the days to months
+		//List<Event> countryStats = CsvReaderWriter
+		//		.readCsv("confirmedglobal.csv", "deathsglobal.csv", country);
+		List<Event> countryStats = FxUtils.data.get(country);
+                List<Event> monthlyCases = new ArrayList<Event>();
+                init();
+               	for (int i = 0; i < 4; i++) { // adding up all the days to months
 			monthlyCases.add(new Event());
 			monthlyCases.get(i).setDate(MONTHS[i]);
 		}

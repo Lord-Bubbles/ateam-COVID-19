@@ -9,6 +9,7 @@ package application;
 public class Event {
 	
 	String date;
+        String name;
 	int cases;
 	int deaths;
 
