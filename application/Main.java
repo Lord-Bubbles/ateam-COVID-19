@@ -142,10 +142,10 @@ public class Main extends Application {
     // Set up the secondary window
     VBox checkBox = new VBox(); // Checkbox for toggling which graph to show
     CheckBox realTime = new CheckBox("Real Time"); // Real-time graph
-    realTime.setSelected(true);
     CheckBox monthly = new CheckBox("Monthly"); // Monthly graph
     CheckBox daily = new CheckBox("Daily"); // Daily graph
     checkBox.getChildren().addAll(realTime, monthly, daily);
+
     HBox top = new HBox();
     Label title = new Label(); // Title of data window
     title.setFont(new Font("Helvetica", 17));
@@ -176,13 +176,7 @@ public class Main extends Application {
     sources.setText("Official data compiled from John Hopkins University Center and the New York Times");
     sources.setAlignment(Pos.BOTTOM_LEFT);
     location.setBottom(sources);
-    // location.setCenter(days.getDailyLineGraph("US"));
- // location.setCenter(days.getDailyLineGraph("United_Kingdom"));
- // location.setCenter(days.getDailyLineGraph("Italy"));
- // location.setCenter(days.getDailyLineGraph("France"));
- // location.setCenter(days.getDailyLineGraph("Germany"));
- // location.setCenter(days.getDailyLineGraph("Spain"));
- // location.setCenter(days.getDailyLineGraph("Iran"));
+
     Button exit2 = new Button("", new ImageView(exitImage)); // Create exit button
     exit2.setTooltip(new Tooltip("Exit")); // Tooltip for the exit button
     BorderPane.setAlignment(exit2, Pos.BOTTOM_RIGHT);
@@ -193,6 +187,13 @@ public class Main extends Application {
     returnButton.setOnAction(e -> { // Return back to the main screen
     	comboBox.getEditor().setText(null);
       primaryStage.getScene().setRoot(root);
+
+      comboBox.getEditor().setText(null);
+
+      realTime.setSelected(false);
+      daily.setSelected(false);
+      monthly.setSelected(false);
+      location.setCenter(null); // Clear the middle pane where the graph is
     });
     
     comboBox.setOnKeyPressed(e -> { // Make sure that scene changes only when the user confirms
@@ -224,6 +225,10 @@ public class Main extends Application {
       if (monthly.isSelected()) {
         realTime.setSelected(false);
         daily.setSelected(false);
+
+        try {
+          real.stop(); // Ensure that the real-time graph stops graphing
+        } catch (Exception ex) {}
         location.setCenter(month.getMonthlyLineGraph(FxUtils.getComboBoxValue(comboBox)));
       }
     });
@@ -233,9 +238,13 @@ public class Main extends Application {
         monthly.setSelected(false);
         realTime.setSelected(false);
         location.setCenter(days.getDailyLineGraph(FxUtils.getComboBoxValue(comboBox)));
+        
+        try {
+          real.stop(); // Ensure that the real-time graph stops graphing
+        } catch (Exception ex) {}
+        location.setCenter(days.getDailyLineGraph(FxUtils.getComboBoxValue(comboBox)));
       }
     });
-
   }
   
   public static void main(String[] args) {
