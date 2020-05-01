@@ -156,10 +156,15 @@ public class Main extends Application {
     Button buttonRight = new Button("", menuIcon);
     buttonRight.setTooltip(new Tooltip("Menu"));
     
+    Image carrot = new Image("/carrot.png", 16, 16, false, false);
+    ImageView dlIcon = new ImageView(carrot);
+    Button dlButton = new Button("", dlIcon);
+    dlButton.setTooltip(new Tooltip("Download data"));
+    
     Pane spacer = new Pane();
     HBox.setHgrow(spacer, Priority.ALWAYS);
     
-    top.getChildren().addAll(returnButton, title, spacer, buttonRight);
+    top.getChildren().addAll(returnButton, title, spacer, dlButton, buttonRight);
     menuOverlay.setTop(top);
     
     BorderSlide rightFlapBar = new BorderSlide(100, buttonRight, Pos.BASELINE_RIGHT, 
@@ -225,6 +230,10 @@ public class Main extends Application {
       }
     });
 
+    dlButton.setOnAction(e -> {
+    	CsvReaderWriter.writeFile(FxUtils.getComboBoxValue(comboBox));
+    });
+    
     monthly.setOnAction(e -> { // Set the actions of the monthly checkbox to show the monthly line graph
       if (monthly.isSelected()) {
         realTime.setSelected(false);
