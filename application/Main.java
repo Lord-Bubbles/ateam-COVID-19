@@ -187,13 +187,6 @@ public class Main extends Application {
     returnButton.setOnAction(e -> { // Return back to the main screen
     	comboBox.getEditor().setText(null);
       primaryStage.getScene().setRoot(root);
-
-      comboBox.getEditor().setText(null);
-
-      realTime.setSelected(false);
-      daily.setSelected(false);
-      monthly.setSelected(false);
-      location.setCenter(null); // Clear the middle pane where the graph is
     });
     
     comboBox.setOnKeyPressed(e -> { // Make sure that scene changes only when the user confirms
