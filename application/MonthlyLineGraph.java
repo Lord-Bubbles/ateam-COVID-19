@@ -4,12 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javafx.application.Application;
-import javafx.collections.*;
-import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.chart.*;
-import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 

@@ -5,14 +5,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.control.ComboBox;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.event.EventHandler;
-import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
-import java.util.ArrayList;
 
 /**
  * Class for making Auto-Complete Combo-Boxes for use in the GUI

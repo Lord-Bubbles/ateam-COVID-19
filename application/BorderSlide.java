@@ -1,6 +1,6 @@
 package application;
 
-import javafx.animation.Animation;
+import javafx.animation.Animation; 
 import javafx.animation.Transition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
