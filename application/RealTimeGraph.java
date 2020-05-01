@@ -125,7 +125,7 @@ public class RealTimeGraph extends Application {
 					series2.getData().remove(0); // remove prior points
 				}
 			});
-			current++;
+			current++; // Get next data value to plot
 		}, 0, 1, TimeUnit.SECONDS);
 		return lineChart;
 	}

@@ -37,6 +37,7 @@ public class MonthlyLineGraph extends Application {
         
         /**
          * Re-initialize everything
+         * @author Andrew Li
          */
         public void init() {
           xAxis = new CategoryAxis();

@@ -56,13 +56,13 @@ public class FxUtils {
       
       @Override
       public void handle(KeyEvent event) {
-        if (event.getCode() == KeyCode.UP) {
+        if (event.getCode() == KeyCode.UP) { // Up arrow pressed
 	  caretPos = -1;
 	  if (comboBox.getEditor().getText() != null) {
 	    moveCaret(comboBox.getEditor().getText().length());
 	  }
 	  return;
-	} else if (event.getCode() == KeyCode.DOWN) {
+	} else if (event.getCode() == KeyCode.DOWN) { // Down arrow pressed
 	  if (!comboBox.isShowing()) {
 	    comboBox.show();
           }
@@ -71,17 +71,17 @@ public class FxUtils {
 	    moveCaret(comboBox.getEditor().getText().length());
 	  }
 	  return;
-	} else if (event.getCode() == KeyCode.BACK_SPACE) {
+	} else if (event.getCode() == KeyCode.BACK_SPACE) { // Back-space pressed
 	  if (comboBox.getEditor().getText() != null) {
 	    moveCaretToPos = true;
 	    caretPos = comboBox.getEditor().getCaretPosition();
 	  }
-	} else if (event.getCode() == KeyCode.DELETE) {
+	} else if (event.getCode() == KeyCode.DELETE) { // Delete button pressed
 	  if (comboBox.getEditor().getText() != null) {
 	    moveCaretToPos = true;
 	    caretPos = comboBox.getEditor().getCaretPosition();
 	  }
-	} else if (event.getCode() == KeyCode.ENTER) {
+	} else if (event.getCode() == KeyCode.ENTER) { // Enter pressed
 	  return;
 	}
 
@@ -94,7 +94,7 @@ public class FxUtils {
 	}
 
 	ObservableList<String> list = FXCollections.observableArrayList();
-	for (String aData : data) {
+	for (String aData : data) { // Auto-complete repopulation of list
 	  if (aData != null && comboBox.getEditor().getText() != null && 
               comparatorMethod.matches(comboBox.getEditor().getText(), aData)) {
 	    list.add(aData);
@@ -110,7 +110,7 @@ public class FxUtils {
 	if (!moveCaretToPos) {
 	  caretPos = -1;
 	}
-	moveCaret(t.length());
+	moveCaret(t.length()); // Move cursor to correct position
 	if (!list.isEmpty()) {
 	  comboBox.show();
 	}
