@@ -189,7 +189,7 @@ public class Main extends Application {
     	location.setCenter(null);
     	realTime.setSelected(false);
     	monthly.setSelected(false);
-    	daily.setSelected(false);
+    	daily.setSelected(true);
       primaryStage.getScene().setRoot(root);
     });
     
