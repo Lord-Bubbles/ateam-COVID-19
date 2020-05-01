@@ -90,7 +90,6 @@ public class Main extends Application {
 
     // Setting up the search field with auto-complete
     ComboBox<String> comboBox = new ComboBox<>(FXCollections.observableArrayList(data));
-
     FxUtils.autoCompleteComboBoxPlus(comboBox, (typedText, itemToCompare) -> 
     itemToCompare.toLowerCase().startsWith(typedText.toLowerCase()));
     comboBox.setMinWidth(comboBox.getWidth());
@@ -132,12 +131,12 @@ public class Main extends Application {
     Label title = new Label(); // Title of data window
     title.setFont(new Font("Helvetica", 17));
 
-    Image hamburger = new Image("/hamburger.png", 16, 16, false, false);
+    Image hamburger = new Image("/hamburger.png", 16, 16, false, false); // Drop-down menu
     ImageView menuIcon = new ImageView(hamburger);
     Button buttonRight = new Button("", menuIcon);
     buttonRight.setTooltip(new Tooltip("Menu"));
     
-    Image carrot = new Image("/carrot.png", 16, 16, false, false);
+    Image carrot = new Image("/carrot.png", 16, 16, false, false); // Download button
     ImageView dlIcon = new ImageView(carrot);
     Button dlButton = new Button("", dlIcon);
     dlButton.setTooltip(new Tooltip("Download data"));

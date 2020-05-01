@@ -77,6 +77,11 @@ public class CsvReaderWriter {
 		return map;
 	}
 
+        /**
+         * Creates a file and writes analyses and data into that file.
+         *
+         * @param country the country to write the data file for
+         */
 	public static void writeFile(String country) {
 		List<Event> events = FxUtils.data.get(country);
 		try {
@@ -143,8 +148,4 @@ public class CsvReaderWriter {
 			System.out.println("File was not found");
 		}
 	}
-
-//	public static void main(String[] args) {
-//		writeFile("China");
-//	}
 }
