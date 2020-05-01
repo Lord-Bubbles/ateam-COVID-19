@@ -144,6 +144,7 @@ public class Main extends Application {
     CheckBox realTime = new CheckBox("Real Time"); // Real-time graph
     CheckBox monthly = new CheckBox("Monthly"); // Monthly graph
     CheckBox daily = new CheckBox("Daily"); // Daily graph
+    daily.setSelected(true); // Default selected option
     checkBox.getChildren().addAll(realTime, monthly, daily);
 
     HBox top = new HBox();
@@ -198,6 +199,7 @@ public class Main extends Application {
       if (e.getCode() == KeyCode.ENTER && data.contains(curSelected)) {
         primaryStage.getScene().setRoot(stackable);
         title.setText("\t Data about " + curSelected); // Update title of data window
+        location.setCenter(days.getDailyLineGraph(curSelected));
       }
     });
 
@@ -214,7 +216,9 @@ public class Main extends Application {
         monthly.setSelected(false);
         daily.setSelected(false);
         location.setCenter(real.getRealTimeGraph(FxUtils.getComboBoxValue(comboBox)));
-      } else { // Ensure the real-time graph stops to avoid weird behavior
+      } else if (!monthly.isSelected() && !daily.isSelected()) { // Can't have all boxes unselected
+        realTime.setSelected(true);
+      } else {// Ensure the real-time graph stops to avoid weird behavior
         try {
           real.stop();
         } catch (Exception ex) {}
@@ -230,6 +234,8 @@ public class Main extends Application {
           real.stop(); // Ensure that the real-time graph stops graphing
         } catch (Exception ex) {}
         location.setCenter(month.getMonthlyLineGraph(FxUtils.getComboBoxValue(comboBox)));
+      } else if (!realTime.isSelected() && !daily.isSelected()) { // Can't have all boxes unselected
+        monthly.setSelected(true);
       }
     });
 
@@ -243,6 +249,8 @@ public class Main extends Application {
           real.stop(); // Ensure that the real-time graph stops graphing
         } catch (Exception ex) {}
         location.setCenter(days.getDailyLineGraph(FxUtils.getComboBoxValue(comboBox)));
+      } else if (!realTime.isSelected() && !monthly.isSelected()) { // Can't have all boxes unselected
+        daily.setSelected(true);
       }
     });
   }
