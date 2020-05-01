@@ -171,7 +171,6 @@ public class Main extends Application {
     DailyLineGraph days = new DailyLineGraph();		// can be used to get daily graph
     RealTimeGraph real = new RealTimeGraph();		// can be used to get a real time graph
 
-    location.setCenter(real.getRealTimeGraph("China"));
     Label sources = new Label();
     sources.setFont(new Font("Helvetica", 10));
     sources.setText("Official data compiled from John Hopkins University Center and the New York Times");
