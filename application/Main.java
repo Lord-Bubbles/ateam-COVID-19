@@ -142,7 +142,6 @@ public class Main extends Application {
     // Set up the secondary window
     VBox checkBox = new VBox(); // Checkbox for toggling which graph to show
     CheckBox realTime = new CheckBox("Real Time"); // Real-time graph
-    realTime.setSelected(true);
     CheckBox monthly = new CheckBox("Monthly"); // Monthly graph
     CheckBox daily = new CheckBox("Daily"); // Daily graph
     checkBox.getChildren().addAll(realTime, monthly, daily);
@@ -186,6 +185,10 @@ public class Main extends Application {
     
     returnButton.setOnAction(e -> { // Return back to the main screen
     	comboBox.getEditor().setText(null);
+    	location.setCenter(null);
+    	realTime.setSelected(false);
+    	monthly.setSelected(false);
+    	daily.setSelected(false);
       primaryStage.getScene().setRoot(root);
     });
     
