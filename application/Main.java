@@ -173,7 +173,7 @@ public class Main extends Application {
 
     location.setCenter(real.getRealTimeGraph("China"));
     Label sources = new Label();
-    sources.setFont(new Font("Helvetica", 8));
+    sources.setFont(new Font("Helvetica", 10));
     sources.setText("Official data compiled from John Hopkins University Center and the New York Times");
     sources.setAlignment(Pos.BOTTOM_LEFT);
     location.setBottom(sources);
