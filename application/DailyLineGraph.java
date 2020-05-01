@@ -50,8 +50,8 @@ public class DailyLineGraph extends Application {
           series1 = new XYChart.Series();
           series2 = new XYChart.Series();
 
-          xAxis.setLabel("Week");
-	  chart.setTitle("COVID 19 WEEKLY TRENDS");
+          xAxis.setLabel("Day");
+	  chart.setTitle("COVID 19 Daily Trends");
 	  series1 = new XYChart.Series();
 	  series1.setName("Number of Cases");
 	  series2 = new XYChart.Series();
