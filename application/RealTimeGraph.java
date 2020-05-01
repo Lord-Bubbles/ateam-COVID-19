@@ -24,7 +24,6 @@ import javafx.stage.Stage;
 @SuppressWarnings("unchecked")
 public class RealTimeGraph extends Application {
 
-	ScheduledExecutorService scheduledExecutorService;
 	public static final int WINDOW_WIDTH = 400;
 	public static final int WINDOW_HEIGHT = 400;
 	private CategoryAxis xAxis;
@@ -33,6 +32,7 @@ public class RealTimeGraph extends Application {
 	private static int current = 0;
 	private XYChart.Series<String, Number> series1; // confirmed cases
 	private XYChart.Series<String, Number> series2; // death rates
+        private ScheduledExecutorService scheduledExecutorService;
 
 	/**
 	 * This constructor is used to set the labels and titles of the graphs
@@ -53,7 +53,7 @@ public class RealTimeGraph extends Application {
           xAxis.setLabel("Time (Days)");
 	  xAxis.setAnimated(false); // axis animations are removed
 	  yAxis.setAnimated(false); // axis animations are removed
-	  lineChart.setTitle("RealTime Trends over 40 day Timespan");
+	  lineChart.setTitle("Real-time Trends over 40 day Timespan");
 	  lineChart.setAnimated(false);
 	  series1 = new XYChart.Series<>();
 	  series2 = new XYChart.Series<>();
@@ -108,7 +108,7 @@ public class RealTimeGraph extends Application {
 		// Input data to the chart
 		List<Event> weeklyCases = FxUtils.data.get(country);
                 scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-		scheduledExecutorService.scheduleAtFixedRate(() -> { // lambda
+		scheduledExecutorService.scheduleAtFixedRate(() -> { // Lambda
 			// Update the chart
 			if (current >= weeklyCases.size() - 1) {
 				scheduledExecutorService.shutdownNow();
@@ -117,11 +117,9 @@ public class RealTimeGraph extends Application {
 				series1.getData().add(new XYChart.Data<>( // confirmed cases
 						weeklyCases.get(current - 1).getDate().substring(6),
 						weeklyCases.get(current - 1).getCases()));
-				series2.getData() // death rates
-						.add(new XYChart.Data<>(
-								weeklyCases.get(current - 1).getDate()
-										.substring(6),
-								weeklyCases.get(current - 1).getDeaths()));
+				series2.getData().add(new XYChart.Data<>( // death cases
+						weeklyCases.get(current - 1).getDate().substring(6),
+						weeklyCases.get(current - 1).getDeaths()));
 				if (series1.getData().size() > WINDOW_WIDTH / 10) {
 					series1.getData().remove(0); // only plot 40 days
 					series2.getData().remove(0); // remove prior points

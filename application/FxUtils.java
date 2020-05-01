@@ -58,7 +58,7 @@ public class FxUtils {
 
       private boolean moveCaretToPos = false;
       private int caretPos; // Position of cursor
-
+      
       @Override
       public void handle(KeyEvent event) {
         if (event.getCode() == KeyCode.UP) {

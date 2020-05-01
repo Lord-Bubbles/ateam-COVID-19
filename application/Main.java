@@ -40,6 +40,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -51,7 +54,7 @@ public class Main extends Application {
   
   public static final int WINDOW_WIDTH = 900;
   public static final int WINDOW_HEIGHT = 780;
-
+  
   public void init() {
     // TODO: Maybe need this don't know yet
   }
@@ -122,13 +125,16 @@ public class Main extends Application {
     root.setBottom(exit); 
     
     Scene mainScene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-
+    
     // Add the above elements and set the primary stage
     primaryStage.setTitle("COVID-19");
     primaryStage.setScene(mainScene);
     primaryStage.show();
 
+    StackPane stackable = new StackPane();
+    
     BorderPane location = new BorderPane();
+    BorderPane menuOverlay = new BorderPane();
     Image goBack = new Image("/return.png", 16, 16, false, false);
     Button returnButton = new Button("", new ImageView(goBack)); // Return button
     returnButton.setTooltip(new Tooltip("Return")); // Tooltip for the return button
@@ -140,36 +146,47 @@ public class Main extends Application {
     CheckBox monthly = new CheckBox("Monthly"); // Monthly graph
     CheckBox daily = new CheckBox("Daily"); // Daily graph
     checkBox.getChildren().addAll(realTime, monthly, daily);
-    CheckBox death = new CheckBox("Confirmed deaths");
-    death.setSelected(true);
-    CheckBox cc = new CheckBox("Confirmed cases");
-    cc.setSelected(true);
-    checkBox.getChildren().addAll(death, cc);
-    TitledPane menu = new TitledPane("Menu", checkBox);
+
     HBox top = new HBox();
     Label title = new Label(); // Title of data window
     title.setFont(new Font("Helvetica", 17));
-    top.getChildren().addAll(returnButton, title);
-    location.setTop(top);
-    location.setLeft(menu);
+
+    Image hamburger = new Image("/hamburger.png", 16, 16, false, false);
+    ImageView menuIcon = new ImageView(hamburger);
+    Button buttonRight = new Button("", menuIcon);
+    buttonRight.setTooltip(new Tooltip("Menu"));
+    
+    Pane spacer = new Pane();
+    HBox.setHgrow(spacer, Priority.ALWAYS);
+    
+    top.getChildren().addAll(returnButton, title, spacer, buttonRight);
+    menuOverlay.setTop(top);
+    
+    BorderSlide rightFlapBar = new BorderSlide(100, buttonRight, Pos.BASELINE_RIGHT, 
+    		checkBox);
+    rightFlapBar.setAlignment(Pos.CENTER_RIGHT);
+    menuOverlay.setRight(rightFlapBar);
+    
     MonthlyLineGraph month = new MonthlyLineGraph();	// can be used to get monthly graph
     DailyLineGraph days = new DailyLineGraph();		// can be used to get daily graph
     RealTimeGraph real = new RealTimeGraph();		// can be used to get a real time graph
 
     location.setCenter(real.getRealTimeGraph("China"));
-    // location.setCenter(days.getDailyLineGraph("US"));
- // location.setCenter(days.getDailyLineGraph("United_Kingdom"));
- // location.setCenter(days.getDailyLineGraph("Italy"));
- // location.setCenter(days.getDailyLineGraph("France"));
- // location.setCenter(days.getDailyLineGraph("Germany"));
- // location.setCenter(days.getDailyLineGraph("Spain"));
- // location.setCenter(days.getDailyLineGraph("Iran"));
+    Label sources = new Label();
+    sources.setFont(new Font("Helvetica", 8));
+    sources.setText("Official data compiled from John Hopkins University Center and the New York Times");
+    sources.setAlignment(Pos.BOTTOM_LEFT);
+    location.setBottom(sources);
+
     Button exit2 = new Button("", new ImageView(exitImage)); // Create exit button
     exit2.setTooltip(new Tooltip("Exit")); // Tooltip for the exit button
     BorderPane.setAlignment(exit2, Pos.BOTTOM_RIGHT);
-    location.setBottom(exit2);
+    menuOverlay.setBottom(exit2);
 
+    stackable.getChildren().addAll(location, menuOverlay);
+    
     returnButton.setOnAction(e -> { // Return back to the main screen
+    	comboBox.getEditor().setText(null);
       primaryStage.getScene().setRoot(root);
     });
     
@@ -177,12 +194,16 @@ public class Main extends Application {
                                     // their choice (ENTER) in the ComboBox
       String curSelected = FxUtils.getComboBoxValue(comboBox);
       if (e.getCode() == KeyCode.ENTER && data.contains(curSelected)) {
-        primaryStage.getScene().setRoot(location);
+        primaryStage.getScene().setRoot(stackable);
         title.setText("\t Data about " + curSelected); // Update title of data window
       }
     });
 
     exit.setOnAction(e -> { // Close the application
+      primaryStage.close();
+    });
+    
+    exit2.setOnAction(e -> { // Close the application
       primaryStage.close();
     });
 
@@ -191,6 +212,10 @@ public class Main extends Application {
         monthly.setSelected(false);
         daily.setSelected(false);
         location.setCenter(real.getRealTimeGraph(FxUtils.getComboBoxValue(comboBox)));
+      } else { // Ensure the real-time graph stops to avoid weird behavior
+        try {
+          real.stop();
+        } catch (Exception ex) {}
       }
     });
 
@@ -198,6 +223,10 @@ public class Main extends Application {
       if (monthly.isSelected()) {
         realTime.setSelected(false);
         daily.setSelected(false);
+
+        try {
+          real.stop(); // Ensure that the real-time graph stops graphing
+        } catch (Exception ex) {}
         location.setCenter(month.getMonthlyLineGraph(FxUtils.getComboBoxValue(comboBox)));
       }
     });
@@ -207,22 +236,11 @@ public class Main extends Application {
         monthly.setSelected(false);
         realTime.setSelected(false);
         location.setCenter(days.getDailyLineGraph(FxUtils.getComboBoxValue(comboBox)));
-      }
-    });
-
-    death.setOnAction(e -> {
-      if (death.isSelected()) {
-        // Display data about death rate
-      } else {
-        // Don't display data about death rate
-      } 
-    });
-
-    cc.setOnAction(e -> {
-      if (cc.isSelected()) {
-        // Display data about diffusion
-      } else {
-        // Don't display data about diffusion
+        
+        try {
+          real.stop(); // Ensure that the real-time graph stops graphing
+        } catch (Exception ex) {}
+        location.setCenter(days.getDailyLineGraph(FxUtils.getComboBoxValue(comboBox)));
       }
     });
   }

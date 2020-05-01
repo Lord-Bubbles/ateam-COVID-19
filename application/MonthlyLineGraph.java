@@ -48,7 +48,7 @@ public class MonthlyLineGraph extends Application {
           chart = new LineChart(xAxis, yAxis);
 
           xAxis.setLabel("Month");
-	  chart.setTitle("COVID 19 MONTHLY TRENDS");
+	  chart.setTitle("COVID 19 Monthly Trends");
 	  series1 = new XYChart.Series();
 	  series2 = new XYChart.Series();
 	  series1.setName("Number of Cases");
