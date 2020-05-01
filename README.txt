@@ -16,7 +16,7 @@ Which team members were on same xteam together?
 
 Data Instruction:
 
-	 The official data used to measure the confirmed cases and death rates for the countries we recorded is stored in two csv files called "confirmedglobal.csv" and "deathsglobal.csv". Although the program will catch incorrectly formatted files in case one wanted to input their own data, they should format their csv files in accordance with the "confirmedglobal.csv" and "deathsglobal.csv" files to ensure accurate data for all the given countries.
+	 The official data used to measure the confirmed cases and death rates for the countries we recorded is stored in two csv files called "confirmedglobal.csv" and "deathsglobal.csv". Although the program will catch incorrectly formatted files in case one wanted to input their own data, they should input their data into and format it in accordance with the "confirmedglobal.csv" and "deathsglobal.csv" files to ensure accurate data for all the given countries.
 
 Other notes or comments to the grader:
 
